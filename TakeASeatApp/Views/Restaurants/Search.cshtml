@@ -1,0 +1,173 @@
+﻿@using System.Globalization
+@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.SearchRestaurantViewModel
+@{
+    ViewBag.Title = "Search";
+}
+
+@*<div class="jumbotron" style="padding: 30px 20px;">
+        <h2>Explore the city</h2>
+        <p class="lead">
+        </p>
+    </div>*@
+@Html.Raw(ViewBag.AppMessage)
+@if (ViewBag.AppMessage.Equals(""))
+{
+    <button id="anotherSearch" class="btn btn-default btn-block center-block" style="margin-top: 20px; margin-bottom: 20px;">Change Search Options</button>
+    <section id="searchOptions" style="margin-top: 20px;">
+        <div id="where" class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Where?</div>
+                <div class="panel-body">
+                    <div class="form-group form-inline">
+                        <input type="text" class="form-control" id="inputAddress" name="address" />
+                        <span class="glyphicon glyphicon-screenshot" id="getCurrentAddress"></span>
+                    </div>
+                    <div class="form-group form-inline">
+                        <select id="inputDistance" class="form-control">
+                            <option value="0.5">0.5 km</option>
+                            <option value="1">1 km</option>
+                            <option value="1.5">1.5 km</option>
+                            <option value="2">2 km</option>
+                        </select>
+                        <label for="inputDistance" class="control-label"> km</label>
+                    </div>
+                </div>
+            </div>
+            @*<h4>Where?</h4>
+                <div class="form-horizontal">
+                    <div class="form-group form-inline">
+                        <input type="text" class="form-control" id="inputAddress" name="address" />
+                        <span class="glyphicon glyphicon-screenshot" id="getCurrentAddress"></span>
+                    </div>
+                    <div class="form-group form-inline">
+                        <select id="inputDistance" class="form-control">
+                            <option value="0.5">0.5 km</option>
+                            <option value="1">1 km</option>
+                            <option value="1.5">1.5 km</option>
+                            <option value="2">2 km</option>
+                        </select>
+                        <label for="inputDistance" class="control-label"> km</label>
+                    </div>
+                </div>*@
+        </div>
+
+        <div id="when" class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">When?</div>
+                <div class="panel-body">
+                    <div class="form-group form-inline">
+                        @Html.TextBox("Date", DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "form-control" })
+                        @Html.TextBox("Time", DateTime.Now.ToString("HH:mm"), new { type = "time", @class = "form-control" })
+                    </div>
+                    <div class="form-group form-inline">
+                        <input id="inputDuration" type="number" value="1" step="0.5" name="duration" min="0.5" class="form-control" />
+                        <label for="inputDuration" class="control-label"> hours</label>
+                    </div>
+                </div>
+            </div>
+            @*<h4>When?</h4>
+                <div class="form-horizontal">
+                    <div class="form-group form-inline">
+                        @Html.TextBox("Date", DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "form-control" })
+                        @Html.TextBox("Time", DateTime.Now.ToString("HH:mm"), new { type = "time", @class = "form-control" })
+                    </div>
+                    <div class="form-group form-inline">
+                        <input id="inputDuration" type="number" value="1" step="0.5" name="duration" min="0.5" class="form-control" />
+                        <label for="inputDuration" class="control-label"> hours</label>
+                    </div>
+                </div>*@
+        </div>
+
+        <div id="who" class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Who?</div>
+                <div class="panel-body">
+                    <div class="form-group form-inline">
+                        <input type="number" value="1" min="1" class="form-control" id="inputPersons" name="address" />
+                        <label for="inputPersons" class="control-label"> persons</label>
+                    </div>
+                </div>
+            </div>
+            @*<h4>Who?</h4>
+                <div class="form-horizontal">
+                    <div class="form-group form-inline">
+                        <input type="number" value="1" min="1" class="form-control" id="inputPersons" name="address" />
+                        <label for="inputPersons" class="control-label"> persons</label>
+                    </div>
+                </div>*@
+        </div>
+
+        <div id="tags" class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Tags</div>
+                <div class="panel-body">
+                    <h4 class="" data-toggle="modal" data-target="#tagsModel"><span class="glyphicon glyphicon-plus"></span>Add Tags</h4>
+                    <div id="tagsList"></div>
+                    <div class="modal fade" id="tagsModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalTitle">Select tags for your search</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="tagsListModal">
+                                        @foreach (Tags tag in Model.TagsList)
+                                        {
+                                            <span id="tag-@tag.Id" class="btn btn-default btn-sm" style="margin-bottom: 10px;">@tag.Name</span>
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<h4 class="" data-toggle="modal" data-target="#tagsModel"><span class="glyphicon glyphicon-plus"></span>Add Tags</h4>
+                <div id="tagsList"></div>
+                <div class="modal fade" id="tagsModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalTitle">Select tags for your search</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="tagsListModal">
+                                    @foreach (Tags tag in Model.TagsList)
+                                    {
+                                        <span id="tag-@tag.Id" class="btn btn-default btn-sm" style="margin-bottom: 10px;">@tag.Name</span>
+
+                                    }
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        <input id="btnSearchRestaurants" type="submit" value="Explore" class="btn btn-primary btn-lg btn-block center-block" />
+        <div id="loadingContainer" class="col-sm-12"><img src="~/Content/Images/Loading.gif" height="100" width="100" class="img-responsive center-block" /></div>
+    </section>
+
+    <div id="searchResults"></div>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript" src="~/ViewScripts/Restaurants/Search.js"></script>
+    <script>
+        var SearchSettings = {
+            ReservationUrl: '@Url.Action("AddReservation","Reservation")'
+        }
+    </script>
+}
+

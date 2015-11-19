@@ -1,0 +1,23 @@
+﻿@model MvcPaging.IPagedList<TakeASeatApp.ViewModels.RecommendationsRestaurantViewModel>
+@{
+    ViewBag.Title = "Recommendations";
+}
+
+<div class="jumbotron" style="padding: 30px 20px;">
+    <h2>Recommendations Panel</h2>
+    <p class="lead">
+        On this page you can see the recommendations Take A Seat has found for you based on the searched you have submited.
+    </p>
+</div>
+<div id="recommendationsList">
+    @Html.Partial("_RecommendationResult", Model)
+</div>
+
+@section scripts{
+    <script src="~/ViewScripts/Restaurants/Recommendations.js"></script>
+    <script>
+        var SearchSettings = {
+            ReservationUrl: '@Url.Action("AddReservation","Reservation")'
+        }
+    </script>
+}

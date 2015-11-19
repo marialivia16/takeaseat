@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.DeleteRestaurantViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="jumbotron" style="padding: 30px 20px;">
+    <h1>Delete @Model.Restaurant.Name</h1>
+    <p class="lead">
+        Are you sure you want to delete this restaurant? If you confirm the action, the restaurant will be removed from our records and other managers will be notified.
+    </p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label class="pull-right">Managers that will be notified</label>
+    </div>
+    <div class="col-md-8">
+        @foreach (AspNetUsers m in Model.Managers)
+        {
+            <p>@m.FirstName @m.LastName</p>
+        }
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-4">
+            @Html.ActionLink("Cancel", "Index", "Reservation", null, new { @class = "btn btn-default pull-right" })
+        </div>
+        <div class="col-md-8">
+            <input type="submit" value="Delete Restaurant" class="btn btn-primary" />
+        </div>
+    </div>
+}
+

@@ -1,0 +1,6 @@
+﻿#Intro { padding-top: 40px; padding-bottom: 80px; }
+#TsqlFiles { display: none; padding-top: 40px; }
+#TsqlFiles p { display: none; }
+#TsqlFiles h4 { margin-bottom: 1.0em; }
+#ProgressIndicator { margin-top: 2.0em; margin-bottom: 2.0em; }
+#Next { display: none; }

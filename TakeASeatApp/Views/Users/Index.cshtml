@@ -1,0 +1,45 @@
+﻿@model TakeASeatApp.ViewModels.IndexUsersViewModel
+
+@{
+    ViewBag.Title = "Users of the application";
+}
+
+@section head
+{
+    <link rel="stylesheet" href="~/ViewStyles/Users/Index.css" />
+}
+
+<h1>@ViewBag.Title</h1>
+<hr />
+<p class="lead">The following persons have user accounts set up in the application:</p>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#clientsTab" data-toggle="tab" aria-expanded="true">Client Role</a></li>
+    <li class=""><a href="#managersTab" data-toggle="tab" aria-expanded="false">Manager Role</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane active in" id="clientsTab">
+        <p>Total number: @Model.ClientUsers.Count()</p>
+        <div id="clientUsers">
+            @Html.Partial("_clientsResult", Model.ClientUsers)
+        </div>
+
+        <div class="pager">
+            @Html.Pager(Model.ClientUsers.PageSize, Model.ClientUsers.PageNumber, Model.ClientUsers.TotalItemCount, new AjaxOptions {UpdateTargetId = "clientUsers"}).Options(o => o.Action("clientsPaginationAjax").DisplayTemplate("BootstrapPagination"))
+        </div>
+    </div>
+    <div class="tab-pane" id="managersTab">
+        <p>Total number: @Model.ManagerUsers.Count()</p>
+        <div id="managerUsers">
+            @Html.Partial("_managersResult", Model.ManagerUsers)
+        </div>
+
+        <div class="pager">
+            @Html.Pager(Model.ClientUsers.PageSize, Model.ClientUsers.PageNumber, Model.ClientUsers.TotalItemCount, new AjaxOptions {UpdateTargetId = "managerUsers"}).Options(o => o.Action("managersPaginationAjax").DisplayTemplate("BootstrapPagination"))
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/ViewScripts/Users/Index.js"></script>
+}

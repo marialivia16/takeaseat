@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@{
+    ViewBag.Title = "Register Options";
+}
+
+<div class="jumbotron">
+    <h1 id="Name">Who are you?</h1>
+    <p class="lead">
+        You can create an account based on your identity. What kind of user do you want to be? Choose wisely.
+    </p>
+</div>
+
+<div class="row">
+    <section class="col-md-6 text-center">
+        <div id="registerContainer" style="padding: 10px 70px;">
+            <h2>Client</h2>
+            <hr />
+            <h4>As a client you have many benefits including:</h4>
+            <span class="btn btn-sm btn-info">1</span>
+            <h4>Search for restaurants anywhere in the world and filter the results</h4>
+            <span class="btn btn-sm btn-info">2</span>
+            <h4>Choose the restaurant that fits you best and make a reservation</h4>
+            <span class="btn btn-sm btn-info">2</span>
+            <h4>Get notifications through email when a manager changes the status of your reservation</h4>
+            <p>@Html.ActionLink("Register as a client", "RegisterClient", "Account", null, new { @class = "btn btn-lg btn-primary" })</p>
+        </div>
+    </section>
+    <section class="col-md-6 text-center">
+        <div id="loginContainer" style="padding: 10px 70px;">
+            <h2>Manager</h2>
+            <hr />
+            <h4>If you are the manager of a restaurant and you need to keep track of the reservations, you are in the right place:</h4>
+            <span class="btn btn-sm btn-info">1</span>
+            <h4>Edit the details of the restaurant you are managing</h4>
+            <span class="btn btn-sm btn-info">2</span>
+            <h4>Get notifications through email when a reservation has been sent by a client</h4>
+            <span class="btn btn-sm btn-info">3</span>
+            <h4>Register up to 3 people to manage the same restaurant</h4>
+            <p>@Html.ActionLink("Register as a manager", "RegisterManager", "Account", null, new { @class = "btn btn-lg btn-primary" })</p>
+        </div>
+    </section>
+</div>

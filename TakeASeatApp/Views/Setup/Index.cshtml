@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@{
+    ViewBag.Title = "Application setup";
+}
+
+@section head
+{
+	<link rel="stylesheet" href="~/ViewStyles/Setup/Index.css" />
+}
+
+<h1>@ViewBag.Title</h1>
+<div class="alert alert-warning" role="alert" style="margin-top: 4.0em; margin-bottom: 4.0em;">
+	<h3 style="margin-top: 0;">Initial configuration</h3>
+	<p>The basic application global settings are missing, suggesting this is the first time the application is run.</p>
+	<p>You'll have to take some first steps before using the application.</p>
+	<ol>
+		<li>The database will be initializaed, creating the tables for data, indexes and code.</li>
+		<li>A first administrative account will be created so you'll be able to create user accounts using this one.</li>
+	</ol>
+	<div style="margin-top: 2.0em; text-align: right;">
+		<a href="@Url.Action("Install")" class="button success lg">Let's start initial setup</a>
+	</div>
+</div>

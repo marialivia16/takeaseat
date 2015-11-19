@@ -1,0 +1,77 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+@{
+    ViewBag.Title = "Change Status";
+}
+@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.ChangeStatusReservationViewModel
+@if (ViewBag.AppMessage != null)
+{
+    @Html.Raw(ViewBag.AppMessage)
+}
+else
+{
+    <div class="jumbotron" style="padding: 30px 20px;">
+        <h1>Change status</h1>
+        <p class="lead">
+            Are you sure you want to change the status of this reservation in <span id="newStatus">@Model.NewStatus</span>?
+        </p>
+    </div>
+
+    <section class="row">
+        <input type="hidden" value="@Model.Reservation.Id" id="hiddenId" />
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Client's name:</label>
+            </div>
+            <div class="col-md-8">
+                <p>@Model.Reservation.AspNetUsers.FirstName @Model.Reservation.AspNetUsers.LastName</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Date and Time:</label>
+            </div>
+            <div class="col-md-8">
+                <p>@Model.Reservation.DateAndTime.ToString("F")</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Duration:</label>
+            </div>
+            <div class="col-md-8">
+                <p>@TimeSpan.FromMinutes(Model.Reservation.Duration).ToString(@"hh\:mm") hours</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Number of persons:</label>
+            </div>
+            <div class="col-md-8">
+                <p>@Model.Reservation.NumberOfGuests</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.ActionLink("Cancel", "Index", "Reservation", null, new { @id = "btnCancel", @class = "btn btn-default pull-right" })
+            </div>
+            <div class="col-md-8">
+                <input id="btnConfirm" type="submit" value="Confirm" class="btn btn-primary" />
+            </div>
+        </div>
+    </section>
+}
+
+@section scripts{
+    <script src="~/ViewScripts/Reservations/ChangeStatus.js"></script>
+    <script>
+        var RedirectUrl = '@Url.Action("Index","Reservation")'
+        var Settings = {
+            ChangeStatusUrl: '@Url.Action("Notifications","Reservation")'
+        }
+    </script>
+}
+
+

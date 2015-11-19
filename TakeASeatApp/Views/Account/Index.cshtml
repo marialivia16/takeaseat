@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@model TakeASeatApp.ViewModels.IndexAccountViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+<div class="jumbotron">
+    <h1 id="Name">@Model.UserProfile.FirstName @Model.UserProfile.LastName</h1>
+    <p class="lead">
+        Welcome to the profile page. View your personal details, edit them and change your password.
+    </p>
+</div>
+@Html.Raw(ViewBag.AppMessage)
+<div class="row">
+    <div id="AccountFields" class="col-sm-8">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Email address</label>
+            </div>
+            <div class="col-md-8">
+                <p class="">@Model.UserProfile.Email</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Phone Number</label>
+            </div>
+            <div class="col-md-8">
+                <p class="">@Model.UserProfile.PhoneNumber</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label class="pull-right">Email Confirmed</label>
+            </div>
+            <div class="col-md-8">
+                <p class="">@Model.UserProfile.EmailConfirmed</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-4">
+        <section class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Actions</h3>
+            </div>
+            <div class="panel-body">
+                @if (!Model.UserProfile.EmailConfirmed)
+                {
+                    @Html.ActionLink("Resend Confirmation Email", "SendEmail", "Account", null, new { @class = "link" })
+                    <br />
+                }
+                @Html.ActionLink("Edit Profile", "EditProfile", "Account", null, new { @class = "link" })
+                <br />
+                @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "link" })
+            </div>
+        </section>
+
+    </div>
+</div>
+@if (User.IsInRole("Administrator"))
+{
+    <section class="panel panel-default" style="margin-top: 20px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">As an Administrator you can:</h3>
+        </div>
+        <div class="panel-body">
+            @Html.ActionLink("Manage Users", "Index", "Users", null, new { @class = "link" })
+            <br />
+            @Html.ActionLink("Manage Restaurant Tags", "Index", "Tags", null, new { @class = "link" })
+        </div>
+    </section>
+}

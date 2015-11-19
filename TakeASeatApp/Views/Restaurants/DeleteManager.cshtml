@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@model TakeASeatApp.ViewModels.DeleteManagerRestaurantViewModel
+@{
+    ViewBag.Title = "Delete Manager";
+}
+
+<div class="jumbotron" style="padding: 30px 20px;">
+    <h1>Stop managing @Model.Restaurant.Name</h1>
+    <p class="lead">
+        Are you sure you want to complete this action? If you confirm, you will no longer be a manager for @Model.Restaurant.Name and you can add a new restaurant.
+    </p>
+</div>
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="center-block" style="width: 200px;">
+            <input type="submit" value="Confirm" class="btn btn-primary btn-block"/><br/>
+        </div>
+    }
+</div>

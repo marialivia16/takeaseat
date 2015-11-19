@@ -1,0 +1,42 @@
+﻿@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.DeleteUsersViewModel
+
+@{
+    ViewBag.Title = "Delete User";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr/>
+@ViewBag.AppMessage
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <blockquote>
+        <h3>
+            @Model.User.FirstName @Model.User.LastName
+        </h3>
+        <p>
+            @Model.User.Email
+        </p>
+        <p>
+            @Model.User.PhoneNumber
+        </p>
+        @if (Model.Restaurant != null)
+        {
+            <p>Manager for @Model.Restaurant.Name</p>
+        }
+    </blockquote>
+
+
+    @*<p>@Html.ActionLink("Delete Restaurant", "Delete", "Restaurants", new { id = Model.User.Id }, null)</p>*@
+
+    <form method="post" action="@Url.Action("Delete", "Users")">
+        <div class="form-group">
+            <h4>Reason</h4>
+            @Html.TextArea("reasonText", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </form>
+</div>

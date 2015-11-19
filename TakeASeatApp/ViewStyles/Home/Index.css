@@ -1,0 +1,14 @@
+﻿#registerContainer {
+    background-image: url("../../Content/Images/Register.jpg");
+}
+
+#loginContainer {
+    background-image: url("../../Content/Images/Login.jpg");
+}
+
+#registerContainer, #loginContainer {
+    border-radius: 5px;
+    padding: 30px 10px;
+    background-size: cover;
+    background-position-x: center;
+}

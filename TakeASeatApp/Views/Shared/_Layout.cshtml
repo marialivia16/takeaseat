@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/ViewStyles/Shared/GeneralLayout.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDkb2L96AYB9838d2LTTFscgIZG7s7nGtI")*@
+    @Scripts.Render("https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places")
+    @RenderSection("head", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Take A Seat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole("Client"))
+                    {
+                        <li>@Html.ActionLink("Search for Restaurants", "Search", "Restaurants")</li>
+                        <li><a href="@Url.Action("Index", "Reservation")">My Reservations <span id="notificationsCounter" class="btn btn-primary btn-xs"></span></a></li>
+                        <li>@Html.ActionLink("Recommendations", "Recommendations", "Restaurants")</li>
+                    }
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <li>@Html.ActionLink("Restaurant", "Index", "Restaurants")</li>
+                        <li><a href="@Url.Action("Index", "Reservation")">Reservations <span id="notificationsCounter" class="btn btn-primary btn-xs"></span></a></li>
+                    }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                        <li>@Html.ActionLink("Tags", "Index", "Tags")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <div id="map-canvas" class="col-sm-7"></div>
+        <div id="content-canvas" class="col-sm-5 body-content">
+            <div id="scrollableContent">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @*<footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jqueryui")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Notifications.js")
+    @RenderSection("scripts", required: false)
+    <script>
+        var Settings = {
+            NotificationUrl: '@Url.Action("Notifications","Reservation")'
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿@model TakeASeatApp.Utils.AppMessage
+@section head
+{
+	<link rel="stylesheet" href="~/ViewStyles/Shared/Message.css" />
+}
+<div class="AppMessageWrapper">
+	@if (Model != null)
+	{ <text>@Html.Raw(Model.ToHtml())</text> }
+	@Html.Raw(ViewBag.AppMessage)
+</div>

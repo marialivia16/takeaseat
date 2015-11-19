@@ -1,0 +1,14 @@
+﻿#frmEditAccount div.form-group:nth-child(3) { margin-top: 4.0em; }
+#frmEditAccount button { margin-top: 2.0em; }
+#frmEditAccount .btn-warning { margin-top: 1.0em; }
+
+@media (min-width: 768px) {
+	#frmCreateAccount { margin-top: 4.0em; margin-bottom: 4.0em; }
+}
+@media (min-width: 970px) {
+	#frmCreateAccount { margin-top: 8.0em; margin-bottom: 8.0em; }
+}
+@media (min-width: 1170px) {
+	#frmCreateAccount { margin-top: 12.0em; margin-bottom: 16.0em; }
+}
+

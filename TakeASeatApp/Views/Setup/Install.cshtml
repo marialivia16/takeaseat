@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@model TakeASeatApp.ViewModels.InstallSetupViewModel
+
+@{
+	ViewBag.Title = "TakeASeat installation";
+}
+
+@section head
+{
+	<link rel="stylesheet" href="~/ViewStyles/Setup/Install.css" />
+}
+
+<h1>@ViewBag.Title</h1>
+<hr/>
+<h3 style="margin-top: 0;">Database initialization</h3>
+<section id="Intro">
+	<p>The first step of the installation is to initialize the database: creating the data tables and relationships between them.</p>
+	<p>Please use the button below to start this process.</p>
+	<section id="Start">
+		<div style="margin-top: 2.0em; text-align: right;">
+			<button type="button" onclick="btnStart_Click();" class="btn btn-default">Start database initialization</button>
+		</div>
+	</section>
+</section>
+<section id="TsqlFiles">
+	<h4>Currently running...</h4>
+	@foreach (FileInfo fileInfo in Model.TsqlScriptFiles)
+	{
+		<p>@string.Format("{0}/{1}", fileInfo.Directory.Name, fileInfo.Name)</p>
+	}
+	<section id="ProgressIndicator">
+		<div class="progress">
+			<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+				<span class="sr-only">0% complete</span>
+			</div>
+		</div>
+	</section>
+</section>
+<section id="Next">
+	<div style="margin-top: 2.0em; text-align: right;">
+		<a href="@Url.Action("AdminAccount")" class="button success lg">Next: Set up administrative account</a>
+	</div>
+</section>
+<form action="@Url.Action("Install_RunScript")" method="post" id="frmScript">
+	@Html.AntiForgeryToken()
+	<input type="hidden" name="ScriptFileName" />
+</form>
+
+@section scripts
+{
+	<script type="text/javascript" src="~/ViewScripts/Setup/Install.js"></script>
+}
+

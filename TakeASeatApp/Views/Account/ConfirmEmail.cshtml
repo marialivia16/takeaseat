@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<div class="jumbotron">
+    <h1 id="Name">Email Confirmed</h1>
+    <p class="lead">
+        Well done! You have confirmed your email and you can now access all the features of the website. Enjoy!
+    </p>
+</div>
+<section>
+    <p>What do you want to do next?</p>
+    <p>@Html.ActionLink("See reservations", "Index", "Reservation",null, null)</p>
+    <p>@Html.ActionLink("Add or edit restaurant", "Index", "Restaurants", null, null)</p>
+</section>

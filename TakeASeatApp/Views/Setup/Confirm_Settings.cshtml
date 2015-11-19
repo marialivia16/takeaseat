@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@{
+	ViewBag.Title = "Installation. View settings";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<p class="lead">Thank you for your time! The application is now ready to use.</p>
+<div class="clearfix"></div>
+<div style="text-align:center; margin-top: 2.0em; margin-bottom: 2.0em;">
+	<a href="@Url.Action("Index", "Users", new { Area = String.Empty })" class="button primary lg" style="margin:1.0em;">To user accounts</a>
+	<a href="@Url.Action("Index", "Home", new { Area = String.Empty })" class="button success lg" style="margin:1.0em;">Start using the application</a>
+</div>
+

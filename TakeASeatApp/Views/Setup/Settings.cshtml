@@ -1,0 +1,69 @@
+﻿@{
+	ViewBag.Title = "Installation. Settings";
+}
+
+@section head
+{
+	<link rel="stylesheet" href="~/ViewStyles/Setup/Settings.css" />
+}
+
+<h1>@ViewBag.Title</h1>
+<p class="lead">Please pay close attention to the settings that you're saving. Minimal checkings are done by the application for these settings, and saving wrong values will affect the stability.</p>
+<p>The safest way is to stick to the format of the defaults. Read the instructions or contact the application vendor for help if you're in doubt.</p>
+<form method="post" action="@Url.Action("Settings", "Setup")" role="form" class="form-horizontal" id="ConfigSettings">
+	@Html.AntiForgeryToken()
+	<fieldset>
+		<legend>Partners and retail shops</legend>
+		<div class="form-group">
+			<label class="col-xs-6">Max unfiltered rows</label>
+			<div class="col-xs-6"><input type="text" name="Partners.Search.Result.MaxCount.Unfiltered" value="@TakeASeatApp.App.GetSetting("Partners.Search.Result.MaxCount.Unfiltered")" data-default="300" placeholder="Ex: 3000" /></div>
+			<p class="col-xs-12">An positive integer, preferrably between 500 and 5000. When looking up partner organizations without any filtering criteria, this will be the maximum number of records showing up.</p>
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>Storage for content files</legend>
+		<div class="form-group">
+			<label class="col-xs-6">Storage type</label>
+			<div class="col-xs-6">
+				<select name="Content.Media.Storage.Type" data-selected="@TakeASeatApp.App.GetSetting("Content.Media.Storage.Type")" data-default="File System">
+					<option value="File System">File System: in a folder on a disk or network share</option>
+					<option value="Azure Storage">Azure Storage: in Cloud as Block Blobs on Azure</option>
+				</select>
+			</div>
+			<p class="col-xs-12">Please make sure that write access is granted for the application account if you're using a file system folder. If you're setting Azure Storage account, you'll need a connection string; the account name must be lower case, the access key is case sensitive.</p>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-6">Root folder or Connection string</label>
+			<div class="col-xs-6"><input type="text" name="Content.Media.Storage.Root" value="@TakeASeatApp.App.GetSetting("Content.Media.Storage.Root")" data-default="~/Content/Media/" placeholder="Ex: ~/Content/Media/" /></div>
+			<p class="col-xs-12">If (Storage type == 'File System'): A root folder path for holding the media is expected. Fill in with an absolute path like "D:\MarketingMaterial\Media\MaterialImages\". Alternatively, you can specify an application-relative path starting with "~", like "~/Content/MaterialImages/". If it starts with "~", the path will be resolved to an OS file system absolute path.</p>
+			<p class="col-xs-12">If (Storage type == 'Azure Storage'): An Azure Storage account connection string is expected. Should be something like "<b>DefaultEndpointsProtocol=<span style="color: green;">https</span>;AccountName=<span style="color: green;">account_name_lowercase</span>;AccountKey=<span style="color: green;">Account+Key/Sample/sBwEH0vfV1k4cL7OIDEp/HAyf5BYtgMucificatenIaGOVulPIBUs98vax2HdFAA4qrB7ynA==</span></b>".</p>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-6">Material folder format</label>
+			<div class="col-xs-6"><input type="text" name="Content.Media.Storage.MaterialFolderFormat" value="@TakeASeatApp.App.GetSetting("Content.Media.Storage.MaterialFolderFormat")" data-default="Material_Images/Material_[Material_ID]" placeholder="Ex: Material_Images/Material_[Material_ID]" /></div>
+			<p class="col-xs-12">A new folder will be created to hold images for each distinct material record. The string "[Material_ID]" will be replaced with the record ID of the material. This folder will be placed under the storage root. If (Storage type == 'Azure Storage') and the path contains a "/", the first segment will be the container name in Azure Storage account, otherwise the entire string will be used will be used (<a href="https://msdn.microsoft.com/en-us/library/dd135715.aspx">read about container naming</a>).</p>
+		</div>
+	</fieldset>
+	@*
+	<fieldset>
+		<legend></legend>
+		<div class="form-group">
+			<label class="col-xs-6"></label>
+			<div class="col-xs-6"><input type="text" name="" value="@TakeASeatApp.App.GetSetting("")" data-default="" placeholder="" /></div>
+			<p class="col-xs-12"></p>
+		</div>
+	</fieldset>
+	*@
+	<div class="clearfix"></div>
+	<div class="col-sm-12 submit">
+		<a href="@Url.Action("Index", "Home", new { Area = String.Empty })" class="button lg warning">Cancel</a>
+		<button type="submit" class="primary lg">Save settings</button>
+	</div>
+	<div class="clearfix"></div>
+</form>
+
+@section scripts
+{
+	<script type="text/javascript" src="~/ViewScripts/Setup/Settings.js"></script>
+}
+

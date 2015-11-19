@@ -1,0 +1,32 @@
+﻿html, body {
+    height: 100%;
+    padding-bottom: 0;
+}
+
+#container {
+    height: 100%;
+}
+
+#map-canvas, #content-canvas {
+    height: 100%;
+    min-height: 100%;
+}
+
+#content-canvas {
+    padding: 0 !important;
+}
+
+#scrollableContent {
+    height: 100%;
+    min-height: 100%;
+    overflow: scroll;
+    padding: 0 15px;
+}
+
+.fill {
+    min-height: 100%;
+}
+
+#loginMenu {
+    margin-right: 15px;
+}

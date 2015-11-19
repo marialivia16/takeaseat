@@ -1,0 +1,13 @@
+﻿@using TakeASeatApp.Models
+@model IPagedList<TakeASeatApp.Models.ApplicationUser>
+@foreach (ApplicationUser account in Model)
+{
+    <blockquote>
+        <h3>@account.FirstName @account.LastName</h3>
+        <p>@account.Email</p>
+        <p>@account.PhoneNumber</p>
+        <span class="link small">
+            @Html.ActionLink("Delete user", "Delete", "Users", new { id = account.Id }, null)
+        </span>
+    </blockquote>
+}

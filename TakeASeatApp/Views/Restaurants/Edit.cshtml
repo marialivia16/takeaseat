@@ -1,0 +1,133 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.EditRestaurantViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section head
+{
+    <link href="~/ViewStyles/Restaurants/Edit.css" rel="stylesheet" />
+}
+
+<div class="jumbotron">
+    <h1 id="Name">@Model.Name</h1>
+    <p class="lead">
+        Edit your restaurant description, phone number or image. You can add new tags or remove the old ones. Be creative!
+        Tags are important in searches and they can help your restaurant be more visible.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <figure>
+            @if (!File.Exists(Server.MapPath("~/Content/Images/RestaurantImage/" + Model.Id + ".jpg")))
+            {
+                <img id="imageUpload" src="~/Content/Images/NoImage.png" class="img-responsive" />
+            }
+            else
+            {
+                <img id="imageUpload" src='@Url.Content("~/Content/Images/RestaurantImage/" + Model.Id +".jpg")' class="img-responsive" />
+            }
+            <figcaption><p>Upload Image</p></figcaption>
+        </figure>
+        <input type="file" id="addImage" style="display: none;" accept=".jpg, .jpeg" />
+        <progress style="display: none;"></progress>
+    </div>
+    <div class="col-md-8">
+        <div class="form-horizontal">
+            @ViewBag.AppMessage
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.WebAddress, new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.WebAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div id="tags" class="col-sm-12">
+                <label class="control-label col-md-3" for="Tags"></label>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <h4 id="addTags" data-toggle="modal" data-target="#tagsModel"><span class="glyphicon glyphicon-plus"></span>Add Tags</h4>
+                    </div>
+                    <div id="tagsList" class="form-group">
+                        @if (Model.TagsForRestaurant.Count >= 0)
+                        {
+                            foreach (Tags tag in Model.TagsForRestaurant)
+                            {
+                                <span class="btn btn-info btn-sm" style="margin-right: 5px; margin-bottom: 5px;" id="@tag.Id">@tag.Name</span>
+                            }
+                        }
+
+                    </div>
+                    <div class="form-group">
+                        <p>...or create new ones</p>
+                        <input type="text" id="newTagInput" class="form-control" />
+                    </div>
+
+                    <div class="modal fade" id="tagsModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalTitle">Select tags for your search</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="tagsListModal">
+                                        @foreach (Tags tag in Model.TagsList)
+                                        {
+                                            if (Model.TagsForRestaurant.Contains(tag))
+                                            {
+                                        <span id="tag-@tag.Id" class="btn btn-info btn-sm" style="margin-bottom: 10px;">@tag.Name</span>
+                                            }
+                                            else
+                                            {
+                                        <span id="tag-@tag.Id" class="btn btn-default btn-sm" style="margin-bottom: 10px;">@tag.Name</span>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input id="btnEditRestaurant" type="submit" value="Save Changes" class="btn btn-primary btn-md" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/ViewScripts/Restaurants/Edit.js"></script>
+}

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Add Restaurant";
+}
+
+@section head
+{
+    <link href="~/ViewStyles/Restaurants/AddRestaurant.css" rel="stylesheet" />
+}
+
+<div class="jumbotron" style="padding: 40px;">
+    <h1>Add Restaurant</h1>
+    <p class="lead">
+        Use the box below to find the restaurant you work for. Note that you will find it only if it is visible on Google Maps.
+    </p>
+</div>
+@ViewBag.AppMessage
+<section class="row">
+    <div class="col-sm-12">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" id="pac-input" name="restaurant" placeholder="Name of restaurant">
+            </div>
+            <input id="btnAddRestaurant" type="submit" value="Add restaurant" class="btn btn-primary" />
+        </form>
+        @*<div class="form-horizontal">
+                <div class="form-group">
+
+                </div>
+            </div>*@
+    </div>
+</section>
+<div class="col-sm-12" id="addResult">
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/ViewScripts/Restaurants/AddRestaurant.js"></script>
+}

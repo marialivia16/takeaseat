@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@{
+    ViewBag.Title = "Welcome";
+}
+
+@section head
+{
+    <link href="@Url.Content("~/ViewStyles/Home/Index.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="jumbotron">
+    <h1 id="Name">Welcome to Take A Seat!</h1>
+    <p class="lead">
+        Wheather you are looking for a place to eat, have a drink with some friends or you want to promote your restaurant this is the place for you.
+        Join Take A Seat: make reservations, manage them and have fun!
+    </p>
+</div>
+<div class="row">
+    <section class="col-md-6 text-center">
+        <div id="registerContainer">
+            <h2>You are new to the website?</h2>
+            <hr />
+            <h4>Follow 2 easy steps to join us:</h4>
+            <span class="btn btn-sm btn-info">1</span>
+            <h4>Choose the role you want to have: either a client or a manager</h4>
+            <span class="btn btn-sm btn-info">2</span>
+            <h4>Enter a valid email address and a password</h4>
+            <p>@Html.ActionLink("Register", "RegisterOptions", "Account", null, new { @class = "btn btn-lg btn-primary" })</p>
+        </div>
+    </section>
+    <section class="col-md-6 text-center">
+        <div id="loginContainer">
+            <h2>Already a member?</h2>
+            <hr />
+            <h4>Then don't hesitate and login. Only then you will be able to:</h4>
+            <span class="btn btn-sm btn-info">1</span>
+            <h4>Search for restaurants</h4>
+            <span class="btn btn-sm btn-info">2</span>
+            <h4>Manage reservations</h4>
+            <p>@Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-lg btn-primary" })</p>
+        </div>
+    </section>
+</div>
+
+

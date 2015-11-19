@@ -1,0 +1,60 @@
+﻿@using TakeASeatApp.Models
+@model List<TakeASeatApp.Models.Reservations>
+
+@foreach (Reservations r in Model)
+{
+    <tr class="restaurantEntry">
+        @if (User.IsInRole("Client"))
+        {
+            <td class="location" style="cursor: pointer;">
+                @r.Restaurants.Name
+                <input type="hidden" value="@r.Restaurants.Latitude+@r.Restaurants.Longitude" />
+            </td>
+        }
+        else if (User.IsInRole("Manager"))
+        {
+            <td>@r.AspNetUsers.FirstName @r.AspNetUsers.LastName</td>
+        }
+        <td>@r.DateAndTime.ToString("F")</td>
+        <td>@TimeSpan.FromMinutes(r.Duration).ToString(@"hh\:mm") hours</td>
+        <td>@r.NumberOfGuests person(s)</td>
+        @if (User.IsInRole("Client") && (r.Status.Equals("Pending") || r.Status.Equals("Accepted")) && r.DateAndTime.CompareTo(DateTime.Now) > 0)
+        {
+            <td id="clientActions">
+                <span class="glyphicon glyphicon-remove pull-right" data-toggle="modal" data-target="#@r.Id" id="icon-@r.Id"></span>
+                <div class="modal fade" id="@r.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h3 class="modal-title" id="myModalTitle">Are you sure you want to delete?</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div id="restaurantDetails">
+                                    The reservation at @r.Restaurants.Name for @r.NumberOfGuests on @r.DateAndTime.ToString("F") will be removed. Please confirm the change.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btnDeleteReservation" id="btn-@r.Id">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        }
+        else if (User.IsInRole("Manager") && r.DateAndTime.CompareTo(DateTime.Now) > 0)
+        {
+            <td id="managerActions">
+                @if (r.Status.Equals("Pending") || r.Status.Equals("Rejected"))
+                {
+                    <button id="Accepted-@r.Id" class="btn btn-link">Accept <span class="glyphicon glyphicon-ok"></span></button>
+                }
+                @if (r.Status.Equals("Pending") || r.Status.Equals("Accepted"))
+                {
+                    <button id="Rejected-@r.Id" class="btn btn-link">Reject <span class="glyphicon glyphicon-remove"></span></button>
+                }
+            </td>
+        }
+    </tr>
+}

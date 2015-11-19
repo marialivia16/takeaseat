@@ -1,0 +1,4 @@
+﻿@model TakeASeatApp.Utils.AppMessage
+@if (Model != null)
+{ <text>@Html.Raw(Model.ToHtml())</text> }
+@Html.Raw(ViewBag.AppMessage)

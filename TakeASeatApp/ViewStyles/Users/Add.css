@@ -1,0 +1,15 @@
+﻿#frmCreateAccount div.row > div:nth-child(5) span { margin-left: 1.0em; }
+#frmCreateAccount div.row > div:nth-child(7) { margin-top: 2.0em; }
+#frmCreateAccount button { margin-top: 2.0em; }
+
+
+@media (min-width: 768px) {
+	#frmCreateAccount { margin-top: 4.0em; margin-bottom: 4.0em; }
+}
+@media (min-width: 970px) {
+	#frmCreateAccount { margin-top: 8.0em; margin-bottom: 8.0em; }
+}
+@media (min-width: 1170px) {
+	#frmCreateAccount { margin-top: 12.0em; margin-bottom: 16.0em; }
+}
+

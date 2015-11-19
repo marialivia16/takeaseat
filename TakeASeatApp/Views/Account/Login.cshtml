@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@using System.Web.UI.WebControls
+@model TakeASeatApp.ViewModels.LoginAccountViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="jumbotron">
+    <h1 id="Name">Welcome back!</h1>
+    <p class="lead">
+        Use your credentials to login and explore the opportunities the application gives you.
+    </p>
+</div>
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Username, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-4 col-md-8">
+            <div class="checkbox">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-4 col-md-8">
+            <input type="submit" value="Login" class="btn btn-primary" />
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Register as a new user", "RegisterOptions")
+    </p>
+    <p>
+        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+    </p>
+}

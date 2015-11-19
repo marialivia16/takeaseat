@@ -1,0 +1,187 @@
+﻿@using System.Globalization
+@using TakeASeatApp.ViewModels
+@model IPagedList<TakeASeatApp.ViewModels.SearchResultRestaurantViewModel>
+@if (Model.Count().Equals(0))
+{
+    <p class="has-error">We apologize, but there are no results at the moment. Try a larger distance or another address.</p>
+}
+else
+{
+    <script>
+        markers = [];
+        @foreach (SearchResultRestaurantViewModel item in Model)
+            {
+         <text>
+        //var coords = new google.maps.LatLng('@item.Restaurant.Latitude.ToString(CultureInfo.InvariantCulture).Replace(",", ".")', '@item.Restaurant.Longitude.ToString(CultureInfo.InvariantCulture).Replace(",", ".")');
+        markers.push(new google.maps.Marker({
+            position: new google.maps.LatLng('@item.Restaurant.Latitude.ToString(CultureInfo.InvariantCulture).Replace(",", ".")', '@item.Restaurant.Longitude.ToString(CultureInfo.InvariantCulture).Replace(",", ".")'),
+            title: '@item.Restaurant.Name',
+            map: map
+        }));
+            $("#address-@(item.Restaurant.Id)").html(getAddressFromLatlngForResults(@item.Restaurant.Latitude.ToString(CultureInfo.InvariantCulture).Replace(",", "."), @item.Restaurant.Longitude.ToString(CultureInfo.InvariantCulture).Replace(",", "."), "#address-@(item.Restaurant.Id)"));
+        </text>
+    }
+        setAllMap(map);
+    </script>
+
+    foreach (SearchResultRestaurantViewModel item in Model)
+    {
+        <blockquote class="row">
+            <div class="col-md-4">
+                <figure style="margin-top: 20px;">
+                    @if (!File.Exists(Server.MapPath("~/Content/Images/RestaurantImage/" + item.Restaurant.Id + ".jpg")))
+                    {
+                        <img src="~/Content/Images/NoImage.png" class="img-responsive img-circle" />
+                    }
+                    else
+                    {
+                        <img src='@Url.Content("~/Content/Images/RestaurantImage/" + item.Restaurant.Id +".jpg")' class="img-responsive img-circle" />
+                    }
+                </figure>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="result" data-toggle="modal" data-target="#@item.Restaurant.Id">
+                            @item.Restaurant.Name
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="glyphicon glyphicon-screenshot centerMap" style="cursor: pointer;"></span>
+                    </div>
+                </div>
+                @foreach (string tag in @item.Tags)
+                {
+                    <span class="btn btn-info btn-xs" style="margin-right: 5px; margin-bottom: 5px;">@tag</span>
+                }
+            </div>
+            <input type="hidden" value="@item.Restaurant.Latitude+@item.Restaurant.Longitude" />
+        </blockquote>
+        <div class="modal fade" id="@item.Restaurant.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalTitle">@item.Restaurant.Name</h3>
+                    </div>
+                    <div class="modal-body">
+                        <section id="restaurantDetails">
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-md-4">
+                                    <figure>
+                                        @if (!File.Exists(Server.MapPath("~/Content/Images/RestaurantImage/" + item.Restaurant.Id + ".jpg")))
+                                        {
+                                            <img src="~/Content/Images/NoImage.png" class="img-responsive img-circle" />
+                                        }
+                                        else
+                                        {
+                                            <img src='@Url.Content("~/Content/Images/RestaurantImage/" + item.Restaurant.Id +".jpg")' class="img-responsive img-circle" />
+                                        }
+                                    </figure>
+                                </div>
+                                <div class="col-md-8">
+                                    @if (!String.IsNullOrEmpty(item.Restaurant.Description))
+                                    {
+                                        <h4>@item.Restaurant.Description</h4>
+                                    }
+                                    else
+                                    {
+                                        <h5>No description</h5>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-md-4">
+                                    <label class="pull-right">Phone Number</label>
+                                </div>
+                                <div class="col-md-8">
+                                    @if (!String.IsNullOrEmpty(item.Restaurant.PhoneNumber))
+                                    {
+                                        <p>@item.Restaurant.PhoneNumber</p>
+                                    }
+                                    else
+                                    {
+                                        <p>-</p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="pull-right">Address</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <p id="address-@item.Restaurant.Id"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="pull-right">Web Address</label>
+                                </div>
+                                <div class="col-md-8">
+                                    @if (!String.IsNullOrEmpty(item.Restaurant.WebAddress))
+                                    {
+                                        <p><a href="@Url.Content(item.Restaurant.WebAddress)" target="_blank">@item.Restaurant.WebAddress</a></p>
+                                    }
+                                    else
+                                    {
+                                        <p>-</p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="pull-right">Tags</label>
+                                </div>
+                                <div class="col-md-8">
+                                    @foreach (string tag in item.Tags)
+                                    {
+                                        <span class="btn btn-info btn-xs" style="margin-right: 5px; margin-bottom: 5px;">@tag</span>
+                                    }
+                                </div>
+                            </div>
+                        </section>
+                        <hr />
+                        <section id="modalReservation">
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label class="pull-right">Date and time:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextBox("DateModal-" + item.Restaurant.Id, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "form-control modalDate" })
+                                    @Html.TextBox("TimeModal-" + item.Restaurant.Id, DateTime.Now.ToString("HH:mm"), new { type = "time", @class = "form-control modalTime" })
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label for="DurationModal-@item.Restaurant.Id" class="pull-right">Duration:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input id="DurationModal-@item.Restaurant.Id" type="number" value="1" step="0.5" name="duration" min="0.5" class="form-control modalDuration" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label for="PersonsModal-@item.Restaurant.Id" class="pull-right">Number of persons:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" value="1" min="1" class="form-control modalPersons" id="PersonsModal-@item.Restaurant.Id" name="address" />
+                                </div>
+                            </div>
+                            <div id="reservationConfirmation-@item.Restaurant.Id" class="text-success text-center">
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btnMakeReservation" id="btn-@item.Restaurant.Id">Make Reservation</button>
+                        <div id="loadingContainer-@item.Restaurant.Id" style="display: inline;"><img src="~/Content/Images/Loading.gif" height="50" width="50" style="display: none;" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="pager">
+        @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, new AjaxOptions { UpdateTargetId = "searchResults" }).Options(o => o.Action("PaginationAjax"))
+    </div>
+}
+

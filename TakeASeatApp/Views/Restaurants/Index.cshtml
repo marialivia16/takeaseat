@@ -1,0 +1,154 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithoutMap.cshtml";
+}
+
+@using TakeASeatApp.Models
+@model TakeASeatApp.ViewModels.IndexRestaurantViewModel
+
+@{
+    ViewBag.Title = "Manage your restaurant";
+}
+
+@Html.Raw(ViewBag.AppMessage)
+@if (ViewBag.AppMessage.Equals(""))
+{
+    if (Model == null)
+    {
+        <div class="jumbotron">
+            <h1>Manage Panel</h1>
+            <p class="lead">
+                You are not managing any restaurant at the moment. Use the link below to add a restaurant.
+            </p>
+        </div>
+        <div class="center-block" style="width: 200px;">
+            @Html.ActionLink("Add Restaurant", "AddRestaurant", null, new { @class = "btn btn-primary btn-block" })
+        </div>
+
+    }
+    else
+    {
+        <div class="jumbotron">
+            <h1>@Model.Restaurant.Name</h1>
+            <p class="lead">
+                This is the restaurant you are managing. Use this page to view its details, to see the other managers, to edit the info, to stop being the manager or to delete it.
+            </p>
+        </div>
+        <section class="row">
+            <div class="col-md-4">
+                <figure>
+                    @if (!File.Exists(Server.MapPath("~/Content/Images/RestaurantImage/" + Model.Restaurant.Id + ".jpg")))
+                    {
+                        <img src="~/Content/Images/NoImage.png" class="img-responsive" />
+                    }
+                    else
+                    {
+                        <img src='@Url.Content("~/Content/Images/RestaurantImage/" + Model.Restaurant.Id +".jpg")' class="img-responsive img-circle" />
+                    }
+                </figure>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="pull-right">Description</h4>
+                    </div>
+                    <div class="col-md-8">
+                        @if (!String.IsNullOrEmpty(Model.Restaurant.Description))
+                        {
+                            <h4>@Model.Restaurant.Description</h4>
+                        }
+                        else
+                        {
+                            <h4>-</h4>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="pull-right">Phone Number</h4>
+                    </div>
+                    <div class="col-md-8">
+                        @if (!String.IsNullOrEmpty(Model.Restaurant.PhoneNumber))
+                        {
+                            <h4>@Model.Restaurant.PhoneNumber</h4>
+                        }
+                        else
+                        {
+                            <h4>-</h4>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="pull-right">Address</h4>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="hidden" id="Restaurant_Latitude" value="@Model.Restaurant.Latitude" />
+                        <input type="hidden" id="Restaurant_Longitude" value="@Model.Restaurant.Longitude" />
+                        <h4 id="address"></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="pull-right">Web Address</h4>
+                    </div>
+                    <div class="col-md-8">
+                        @if (!String.IsNullOrEmpty(Model.Restaurant.WebAddress))
+                        {
+                            <h4><a href="@Url.Content(Model.Restaurant.WebAddress)" target="_blank">@Model.Restaurant.WebAddress</a></h4>
+                        }
+                        else
+                        {
+                            <h4>-</h4>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="pull-right">Tags</h4>
+                    </div>
+                    <div class="col-md-8">
+                        @foreach (Tags tag in Model.Tags)
+                        {
+                            <span class="btn btn-info btn-sm" style="margin-right: 5px; margin-bottom: 5px;" id="@tag.Id">@tag.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="row" style="margin-top: 30px;">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Actions</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>@Html.ActionLink("Edit Details", "Edit", new { restId = Model.Restaurant.Id })</p>
+                        <p>@Html.ActionLink("Delete Restaurant", "Delete", "Restaurants", new { id = Model.Restaurant.Id }, null)</p>
+                        <p>@Html.ActionLink("Stop Managing", "DeleteManager", "Restaurants", null, null)</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Managers</h3>
+                    </div>
+                    <div class="panel-body">
+                        @foreach (AspNetUsers manager in Model.Managers)
+                        {
+                            <p>@manager.FirstName @manager.LastName - @manager.Email</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    }
+}
+@section scripts
+{
+    <script type="text/javascript" src="~/ViewScripts/Restaurants/Index.js"></script>
+}
+
